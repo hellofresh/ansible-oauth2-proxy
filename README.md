@@ -1,12 +1,12 @@
 # ansible-oauth2-proxy
-An ansible role to install [oauth2 proxy](https://github.com/bitly/oauth2_proxy) 
+An ansible role to install [oauth2 proxy](https://github.com/bitly/oauth2_proxy)
 
 Variables
 ---------
 
 ```yaml
-oaut2_proxy_http                         : "https://github.com/bitly/oauth2_proxy/releases/download/v2.0.1/oauth2_proxy-2.0.1.linux-amd64.go1.4.2.tar.gz"
-oaut2_proxy_http_sha256                  : "c6d8f6d74e1958ce1688f3cf7d60648b9d0d6d4344d74c740c515a00b4e023ad"
+oaut2_proxy_http                         : "https://github.com/oauth2-proxy/oauth2-proxy/releases/download/v7.1.3/oauth2-proxy-v7.1.3.linux-amd64.tar.gz"
+oaut2_proxy_http_sha256                  : "a491ca18059848c356935fe2ca9e665faafe4bba3ee1ecbac5a5f5f193195a82"
 oauth2_user                              : "oauth2"
 oauth2_dir                               : "/var/oauth2_proxy"
 oauth2_dir_tmp                           : "/var/oauth2_proxy/tmp"
@@ -19,7 +19,7 @@ oauth2_filename                          : "{{ oauth2_compress_filename |replace
 oauth2_proxy_config                      :
     http_address                         : "127.0.0.1:5000"
     upstreams                            : [ "127.0.0.1:6060" ]
-    provider                             : "github" 
+    provider                             : "github"
     email-domain                         : "*"
     cookie-secure                        : false
     cookie-domain                        : "localhost:5000"
@@ -27,7 +27,7 @@ oauth2_proxy_config                      :
     client_id                            : "YOUR_CLIENT_ID"
     client_secret                        : "CLIENT_SECERET"
 
-oauth2_config_cmdline_args               : "-github-org='MYCoolORg'"
+oauth2_config_cmdline_args               : "--github-org='MYCoolORg'"
 ```
 
 

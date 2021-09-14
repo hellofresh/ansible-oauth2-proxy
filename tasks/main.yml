@@ -1,13 +1,13 @@
 ---
 
 - name: Create the directories for site specific configurations
-  user: 
+  user:
     name="{{ oauth2_user }}"
     shell="/bin/false"
     home="{{ oauth2_dir }}"
 
 - name: Create the directories for site specific configurations
-  file: 
+  file:
     path="{{ item }}"
     state=directory
     owner="{{ oauth2_user }}"
@@ -26,37 +26,44 @@
     owner="{{ oauth2_user }}"
 
 - name: unarchive oauth2 binary
-  unarchive: 
+  unarchive:
     src="{{ oauth2_dir_tmp }}/{{ oauth2_compress_filename }}"
     dest="{{ oauth2_dir }}/"
     creates="{{ oauth2_dir }}/{{ oauth2_compress_filename }}"
     copy=no
 
 - name: Create current symlink
-  file: 
+  file:
     src="{{ oauth2_dir }}/{{ oauth2_filename }}"
     dest="{{ oauth2_dir }}/current"
     owner="{{ oauth2_user }}"
     mode="0755"
     state="link"
-  notify: 
+  notify:
     - oauth2-proxy restart
 
 - name: Deploy init.d script
-  template: 
+  template:
     src="init.d.sh.j2.sh"
     dest="/etc/init.d/oauth2-proxy"
     mode="0755"
-  notify: 
+  register: initd_script
+  notify:
     - oauth2-proxy restart
 
+- name: Reload Systemd
+  systemd:
+    daemon_reload=yes
+    name=oauth2-proxy
+  when: initd_script.changed and ansible_service_mgr == 'systemd'
+
 - name: Deploy Config
-  template: 
+  template:
     src="config.j2"
     dest="{{ oauth2_config_path }}"
     owner="{{ oauth2_user }}"
     mode="0600"
-  notify: 
+  notify:
     - oauth2-proxy restart
 
 - name: Service start

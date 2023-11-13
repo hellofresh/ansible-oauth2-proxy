@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   semgrep-full:
-    runs-on: [ self-hosted, default ]
+    runs-on: ubuntu-latest
     container:
       image: returntocorp/semgrep
 
